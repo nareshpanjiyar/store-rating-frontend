@@ -1,16 +1,148 @@
-# React + Vite
+# Store Rating Platform - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern Store Rating Platform frontend built using React, Vite, Tailwind CSS, React Query, and React Router.
 
-Currently, two official plugins are available:
+## Live Application
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+https://store-rating-prod.vercel.app/
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Features
 
-## Expanding the ESLint configuration
+### Authentication
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+* Login
+* Registration
+* Session Management
+* Automatic Logout on Unauthorized Access
+* Refresh Token Support
+
+### User Dashboard
+
+* Browse Stores
+* Search Stores
+* View Store Details
+* Submit Ratings
+* Update Ratings
+* Profile Management
+* Change Password
+
+### Admin Dashboard
+
+* Dashboard Statistics
+* User Management
+* Store Management
+* Create Users
+* Create Stores
+* Update User Roles
+* Delete Users
+
+### Store Owner Dashboard
+
+* Store Analytics
+* Average Rating View
+* Profile Management
+
+---
+
+## Tech Stack
+
+* React
+* Vite
+* Tailwind CSS
+* React Router DOM
+* React Query
+* Axios
+* Sonner Toast
+* Lucide React Icons
+
+---
+
+## Environment Variables
+
+Create .env
+
+VITE_API_URL=http://localhost:8080
+
+---
+
+## Installation
+
+Clone Repository
+
+git clone <repository-url>
+
+cd store-rating-frontend
+
+Install Dependencies
+
+npm install
+
+---
+
+## Run Application
+
+Development
+
+npm run dev
+
+Build
+
+npm run build
+
+Preview Production Build
+
+npm run preview
+
+---
+
+## Available Roles
+
+### Admin
+
+* Manage Users
+* Manage Stores
+* View Dashboard Statistics
+* Create Users
+* Create Stores
+
+### User
+
+* Browse Stores
+* Search Stores
+* Rate Stores
+* Update Ratings
+
+### Store Owner
+
+* View Store Ratings
+* Monitor Average Ratings
+
+---
+
+## Deployment
+
+Frontend deployed using:
+
+Vercel
+
+Live URL:
+
+https://store-rating-prod.vercel.app/
+
+---
+
+## Backend Dependency
+
+Requires Store Rating Backend API to function.
+
+---
+
+## Author
+
+Naresh Panjiyar
+
+MIT World Peace University
+
+B.Tech Computer Engineering
