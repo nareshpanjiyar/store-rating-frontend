@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { getOwnerDashboard } from "../../api/ownerApi";
+import StarRating from "../../components/ui/StarRating";
 
 export default function Dashboard() {
   const { data } = useQuery({
@@ -9,8 +10,6 @@ export default function Dashboard() {
   });
 
   const dashboard = data?.data || {};
-
-  const ratings = dashboard.ratings || [];
 
   return (
     <div>
@@ -28,7 +27,7 @@ export default function Dashboard() {
         <div className="bg-slate-900 rounded-xl p-6">
           <h3>Total Ratings</h3>
 
-          <p className="text-4xl font-bold mt-3">{ratings.length}</p>
+          <p className="text-4xl font-bold mt-3">{dashboard.totalRatings}</p>
         </div>
       </div>
 
@@ -45,13 +44,17 @@ export default function Dashboard() {
           </thead>
 
           <tbody>
-            {ratings.map((rating) => (
-              <tr key={rating.id} className="border-b border-slate-800">
-                <td className="p-4">{rating.user.name}</td>
+            {dashboard.submittedUsers?.map((item) => (
+              <tr key={item.id} className="border-b border-slate-800">
+                <td className="p-4">{item.user.name}</td>
 
-                <td className="p-4">{rating.user.email}</td>
+                <td className="p-4">{item.user.email}</td>
 
-                <td className="p-4">{rating.rating}</td>
+                <td className="p-4">
+                  <span className="flex gap-2">
+                    {item.rating} <StarRating value={item.rating} />
+                  </span>
+                </td>
               </tr>
             ))}
           </tbody>
