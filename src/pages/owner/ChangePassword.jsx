@@ -74,6 +74,7 @@ export default function ChangePassword() {
 
             <input
               type="password"
+              required
               placeholder="Enter current password"
               {...register("currentPassword")}
               className="
@@ -100,6 +101,7 @@ export default function ChangePassword() {
 
             <input
               type="password"
+              required
               placeholder="Enter new password"
               {...register("newPassword")}
               className="
