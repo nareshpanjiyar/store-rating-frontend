@@ -29,8 +29,12 @@ export default function ChangePassword() {
       toast.success("Password changed successfully");
 
       reset();
-    } catch {
-      toast.error("Failed to change password");
+    } catch (error) {
+      toast.error(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Failed to change password",
+      );
     }
   };
 
