@@ -95,35 +95,34 @@ export default function Dashboard() {
 
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div className="flex gap-4 items-center">
-          {selectedStoreId && (
-            <div>
-              <h2 className="text-2xl font-bold">Select Store</h2>
-            </div>
-          )}
-
           {dashboard.stores?.length > 0 && (
-            <select
-              value={selectedStoreId}
-              onChange={(e) => setSelectedStoreId(e.target.value)}
-              className="
-            min-w-[280px]
-            px-4
-            py-3
-            rounded-xl
-            border
-            border-slate-300
-            dark:border-slate-700
-            bg-white
-            dark:bg-slate-900
-            outline-none
-          "
-            >
-              {dashboard.stores.map((store) => (
-                <option key={store.id} value={store.id}>
-                  {store.name}
-                </option>
-              ))}
-            </select>
+            <>
+              <div>
+                <h2 className="text-2xl font-bold">Select Store</h2>
+              </div>
+              <select
+                value={selectedStoreId}
+                onChange={(e) => setSelectedStoreId(e.target.value)}
+                className="
+                min-w-[280px]
+                px-4
+                py-3
+                rounded-xl
+                border
+                border-slate-300
+                dark:border-slate-700
+                bg-white
+                dark:bg-slate-900
+                outline-none
+                "
+              >
+                {dashboard.stores.map((store) => (
+                  <option key={store.id} value={store.id}>
+                    {store.name}
+                  </option>
+                ))}
+              </select>
+            </>
           )}
         </div>
       </div>
