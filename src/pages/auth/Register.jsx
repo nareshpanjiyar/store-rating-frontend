@@ -5,6 +5,9 @@ import { registerUser } from "../../api/authApi";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "sonner";
 
+const passwordRegex =
+  /^(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{6,}$/;
+
 const schema = z.object({
   name: z.string().min(20, "Name must contain at least 20 characters"),
 
@@ -15,7 +18,12 @@ const schema = z.object({
     .min(1, "Address must be at least 1 character")
     .max(400, "Address cannot exceed 400 characters"),
 
-  password: z.string().min(6, "Password must be at least 6 characters"),
+  password: z
+    .string()
+    .regex(
+      passwordRegex,
+      "Password must contain at least 6 characters, one uppercase letter, and one special character",
+    ),
 });
 
 export default function Register() {

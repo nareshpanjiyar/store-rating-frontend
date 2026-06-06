@@ -6,9 +6,17 @@ import { useAuth } from "../../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "sonner";
 
+const passwordRegex =
+  /^(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{6,}$/;
+
 const schema = z.object({
   email: z.string().email("Please enter a valid email"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
+  password: z
+    .string()
+    .regex(
+      passwordRegex,
+      "Password must contain at least 6 characters, one uppercase letter, and one special character",
+    ),
 });
 
 export default function Login() {
@@ -156,10 +164,6 @@ export default function Login() {
               "
             />
 
-            <p>
-              Minimum 6 characters, including 1 uppercase letter and 1 special
-              character.
-            </p>
             {errors.password && (
               <p className="mt-1 text-sm text-red-400">
                 {errors.password.message}

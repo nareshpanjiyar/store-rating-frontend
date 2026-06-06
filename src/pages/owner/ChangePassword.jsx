@@ -5,11 +5,23 @@ import { changePassword } from "../../api/ownerApi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
+const passwordRegex =
+  /^(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{6,}$/;
+
 const changePasswordSchema = z.object({
   currentPassword: z
     .string()
-    .min(6, "Current password must be at least 6 characters"),
-  newPassword: z.string().min(6, "New password must be at least 6 characters"),
+    .regex(
+      passwordRegex,
+      "Current password must contain at least 6 characters, one uppercase letter, and one special character",
+    ),
+
+  newPassword: z
+    .string()
+    .regex(
+      passwordRegex,
+      "New password must contain at least 6 characters, one uppercase letter, and one special character",
+    ),
 });
 
 export default function ChangePassword() {
@@ -111,10 +123,7 @@ export default function ChangePassword() {
                 focus:ring-blue-500
               "
             />
-            <p>
-              Minimum 6 characters, including 1 uppercase letter and 1 special
-              character.
-            </p>
+
             {errors.currentPassword && (
               <p className="mt-1 text-sm text-red-500">
                 {errors.currentPassword.message}
@@ -146,10 +155,7 @@ export default function ChangePassword() {
                 focus:ring-blue-500
               "
             />
-            <p>
-              Minimum 6 characters, including 1 uppercase letter and 1 special
-              character.
-            </p>
+
             {errors.newPassword && (
               <p className="mt-1 text-sm text-red-500">
                 {errors.newPassword.message}
