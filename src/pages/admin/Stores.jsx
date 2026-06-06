@@ -257,7 +257,7 @@ export default function Stores() {
                   </td>
 
                   <td className="p-4">
-                    <div className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-yellow-500/10 border border-yellow-500/20">
+                    <div className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-yellow-500/10 border-yellow-500/20">
                       <span className="text-yellow-400">★</span>
 
                       <span className="font-semibold">{store.rating}</span>
