@@ -56,6 +56,7 @@ export default function Users() {
   const filteredUsers = useMemo(() => {
     const filtered = users.filter(
       (user) =>
+        user.id?.toLowerCase().includes(search.toLowerCase()) ||
         user.name?.toLowerCase().includes(search.toLowerCase()) ||
         user.email?.toLowerCase().includes(search.toLowerCase()) ||
         user.role?.toLowerCase().includes(search.toLowerCase()),

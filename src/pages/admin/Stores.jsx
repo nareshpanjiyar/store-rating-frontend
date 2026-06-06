@@ -29,11 +29,17 @@ export default function Stores() {
   };
 
   const filteredStores = useMemo(() => {
+    const searchTerm = search.toLowerCase();
+
     const filtered = stores.filter(
       (store) =>
-        store.name?.toLowerCase().includes(search.toLowerCase()) ||
-        store.email?.toLowerCase().includes(search.toLowerCase()) ||
-        store.address?.toLowerCase().includes(search.toLowerCase()),
+        store.id?.toLowerCase().includes(searchTerm) ||
+        store.name?.toLowerCase().includes(searchTerm) ||
+        store.email?.toLowerCase().includes(searchTerm) ||
+        store.address?.toLowerCase().includes(searchTerm) ||
+        store.owner?.name?.toLowerCase().includes(searchTerm) ||
+        store.owner?.email?.toLowerCase().includes(searchTerm) ||
+        String(store.rating || "").includes(searchTerm),
     );
 
     filtered.sort((a, b) => {
@@ -283,7 +289,7 @@ export default function Stores() {
               {filteredStores.length === 0 && (
                 <tr>
                   <td
-                    colSpan={3}
+                    colSpan={5}
                     className="
                       text-center
                       py-16
