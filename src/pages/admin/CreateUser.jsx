@@ -16,10 +16,10 @@ const createUserSchema = z.object({
 
   address: z
     .string()
-    .address("Address is required")
+    .min(10, "Address must be at least 10 characters")
     .max(400, "Address cannot exceed 400 characters"),
 
-  password: z.string().min(1, "Password is required"),
+  password: z.string().min(3, "Password must be at least 3 characters"),
 
   role: z.enum(["USER", "STORE_OWNER"]),
 });

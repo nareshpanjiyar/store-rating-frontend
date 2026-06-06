@@ -14,7 +14,7 @@ const createStoreSchema = z.object({
 
   address: z
     .string()
-    .address("Address is required")
+    .min(10, "Address must be at least 10 characters")
     .max(400, "Address cannot exceed 400 characters"),
 
   ownerId: z.string().min(1, "Please select a store owner"),
