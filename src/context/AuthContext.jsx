@@ -1,5 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
 const AuthContext = createContext();
 
@@ -9,6 +10,7 @@ export const AuthProvider = ({ children }) => {
 
     return stored ? JSON.parse(stored) : null;
   });
+  const queryClient = useQueryClient();
 
   const login = (token, userData) => {
     localStorage.setItem("token", token);
@@ -19,8 +21,8 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
+    queryClient.clear();
     localStorage.clear();
-
     setUser(null);
   };
 

@@ -12,15 +12,18 @@ import {
 } from "lucide-react";
 
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function AdminSidebar() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const location = useLocation();
 
   const [collapsed, setCollapsed] = useState(false);
 
   const logout = () => {
+    queryClient.clear();
     localStorage.clear();
     navigate("/login");
   };

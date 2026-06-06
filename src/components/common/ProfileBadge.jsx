@@ -1,9 +1,11 @@
 import { useState, useRef, useEffect } from "react";
 import { User, LogOut, Lock, ChevronDown } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function ProfileBadge() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const [open, setOpen] = useState(false);
 
@@ -37,6 +39,7 @@ export default function ProfileBadge() {
   };
 
   const logout = () => {
+    queryClient.clear();
     localStorage.clear();
     navigate("/login");
   };
