@@ -33,11 +33,11 @@ export default function Dashboard() {
 
   const dashboard = data?.data || {};
 
-  useEffect(() => {
-    if (!selectedStoreId && dashboard.selectedStore?.id) {
-      setSelectedStoreId(dashboard.selectedStore.id);
-    }
-  }, [dashboard.selectedStore, selectedStoreId]);
+  //   useEffect(() => {
+  //     if (!selectedStoreId && dashboard.selectedStore?.id) {
+  //       setSelectedStoreId(dashboard.selectedStore.id);
+  //     }
+  //   }, [dashboard.selectedStore, selectedStoreId]);
 
   const selectedStore = dashboard.selectedStore;
 
