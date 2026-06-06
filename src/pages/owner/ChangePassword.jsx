@@ -3,6 +3,7 @@ import { Lock } from "lucide-react";
 import { toast } from "sonner";
 import { changePassword } from "../../api/ownerApi";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
 const changePasswordSchema = z.object({
   currentPassword: z
