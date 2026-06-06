@@ -13,7 +13,12 @@ const changePasswordSchema = z.object({
 });
 
 export default function ChangePassword() {
-  const { register, handleSubmit, reset } = useForm({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm({
     resolver: zodResolver(changePasswordSchema),
   });
   const user = JSON.parse(localStorage.getItem("user") || "{}");
@@ -102,6 +107,11 @@ export default function ChangePassword() {
                 focus:ring-blue-500
               "
             />
+            {errors.currentPassword && (
+              <p className="mt-1 text-sm text-red-500">
+                {errors.currentPassword.message}
+              </p>
+            )}
           </div>
 
           <div>
@@ -128,11 +138,18 @@ export default function ChangePassword() {
                 focus:ring-blue-500
               "
             />
+
+            {errors.newPassword && (
+              <p className="mt-1 text-sm text-red-500">
+                {errors.newPassword.message}
+              </p>
+            )}
           </div>
 
           <div className="pt-2">
             <button
               type="submit"
+              disabled={isSubmitting}
               className="
                 bg-blue-600
                 hover:bg-blue-700
@@ -144,7 +161,7 @@ export default function ChangePassword() {
                 transition-colors
               "
             >
-              Update Password
+              {isSubmitting ? "Updating Password..." : "Update Password"}
             </button>
           </div>
         </form>

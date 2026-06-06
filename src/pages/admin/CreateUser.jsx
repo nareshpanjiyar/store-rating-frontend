@@ -16,7 +16,7 @@ const createUserSchema = z.object({
 
   address: z
     .string()
-    .min(10, "Address must be at least 10 characters")
+    .min(1, "Address must be at least 1 character")
     .max(400, "Address cannot exceed 400 characters"),
 
   password: z.string().min(3, "Password must be at least 3 characters"),
@@ -210,10 +210,6 @@ export default function CreateUser() {
                 focus:ring-blue-500
               "
             />
-
-            <p className="mt-1 text-xs text-slate-500">
-              Maximum 400 characters
-            </p>
 
             {errors.address && (
               <p className="mt-1 text-sm text-red-500">
