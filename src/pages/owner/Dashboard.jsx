@@ -110,14 +110,6 @@ export default function Dashboard() {
           gap-4
         "
       >
-        <div>
-          <h2 className="text-2xl font-bold">Store Dashboard</h2>
-
-          <p className="text-slate-500">
-            Monitor ratings and customer feedback
-          </p>
-        </div>
-
         <select
           value={selectedStoreId}
           onChange={(e) => setSelectedStoreId(e.target.value)}
