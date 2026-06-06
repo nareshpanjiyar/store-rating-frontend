@@ -8,7 +8,7 @@ import { toast } from "sonner";
 
 const schema = z.object({
   email: z.string().email("Please enter a valid email"),
-  password: z.string().min(3, "Password must be at least 3 characters"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
 export default function Login() {
@@ -156,6 +156,10 @@ export default function Login() {
               "
             />
 
+            <p>
+              Minimum 6 characters, including 1 uppercase letter and 1 special
+              character.
+            </p>
             {errors.password && (
               <p className="mt-1 text-sm text-red-400">
                 {errors.password.message}

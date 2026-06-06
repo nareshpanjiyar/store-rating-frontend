@@ -8,8 +8,8 @@ import { z } from "zod";
 const changePasswordSchema = z.object({
   currentPassword: z
     .string()
-    .min(3, "Current password must be at least 3 characters"),
-  newPassword: z.string().min(3, "New password must be at least 3 characters"),
+    .min(6, "Current password must be at least 6 characters"),
+  newPassword: z.string().min(6, "New password must be at least 6 characters"),
 });
 
 export default function ChangePassword() {
@@ -111,6 +111,10 @@ export default function ChangePassword() {
                 focus:ring-blue-500
               "
             />
+            <p>
+              Minimum 6 characters, including 1 uppercase letter and 1 special
+              character.
+            </p>
             {errors.currentPassword && (
               <p className="mt-1 text-sm text-red-500">
                 {errors.currentPassword.message}
@@ -142,7 +146,10 @@ export default function ChangePassword() {
                 focus:ring-blue-500
               "
             />
-
+            <p>
+              Minimum 6 characters, including 1 uppercase letter and 1 special
+              character.
+            </p>
             {errors.newPassword && (
               <p className="mt-1 text-sm text-red-500">
                 {errors.newPassword.message}

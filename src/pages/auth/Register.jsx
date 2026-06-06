@@ -15,7 +15,7 @@ const schema = z.object({
     .min(1, "Address must be at least 1 character")
     .max(400, "Address cannot exceed 400 characters"),
 
-  password: z.string().min(3, "Password must be at least 3 characters"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
 export default function Register() {

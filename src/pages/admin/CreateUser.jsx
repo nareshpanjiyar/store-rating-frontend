@@ -19,7 +19,7 @@ const createUserSchema = z.object({
     .min(1, "Address must be at least 1 character")
     .max(400, "Address cannot exceed 400 characters"),
 
-  password: z.string().min(3, "Password must be at least 3 characters"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
 
   role: z.enum(["USER", "STORE_OWNER"]),
 });
@@ -181,6 +181,11 @@ export default function CreateUser() {
                 focus:ring-blue-500
               "
             />
+
+            <p>
+              Minimum 6 characters, including 1 uppercase letter and 1 special
+              character.
+            </p>
 
             {errors.password && (
               <p className="mt-1 text-sm text-red-500">
