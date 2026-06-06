@@ -1,23 +1,44 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useState, useMemo, useEffect } from "react";
+
 import { useQuery } from "@tanstack/react-query";
-import { useMemo, useState } from "react";
-import { Star, Users, ArrowUpDown, Search } from "lucide-react";
+
+import {
+  Star,
+  Users,
+  Store,
+  Search,
+  ArrowUpDown,
+  MapPin,
+  Mail,
+} from "lucide-react";
 
 import { getOwnerDashboard } from "../../api/ownerApi";
+
 import StarRating from "../../components/ui/StarRating";
 
 export default function Dashboard() {
-  const { data, isLoading } = useQuery({
-    queryKey: ["ownerDashboard"],
-    queryFn: getOwnerDashboard,
-  });
-
-  const dashboard = data?.data || {};
-
+  const [selectedStore, setSelectedStore] = useState(null);
+  const [selectedStoreId, setSelectedStoreId] = useState("");
   const [search, setSearch] = useState("");
 
   const [sortField, setSortField] = useState("rating");
 
   const [sortDirection, setSortDirection] = useState("desc");
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["ownerDashboard", selectedStoreId],
+
+    queryFn: () => getOwnerDashboard(selectedStoreId),
+  });
+
+  const dashboard = data?.data || {};
+  useEffect(() => {
+    if (dashboard.selectedStore) {
+      setSelectedStoreId(dashboard.selectedStore?.id);
+      setSelectedStore(dashboard.selectedStore);
+    }
+  }, [dashboard]);
 
   const handleSort = (field) => {
     if (sortField === field) {
@@ -73,26 +94,90 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-8">
+      {/* Store Selector */}
+
+      <div className="flex justify-between items-center">
+        <div>
+          <h2 className="text-xl font-semibold">Select Store</h2>
+        </div>
+
+        <select
+          value={selectedStoreId}
+          onChange={(e) => setSelectedStoreId(e.target.value)}
+          className="
+            px-4
+            py-3
+            rounded-xl
+            border
+            border-slate-300
+            dark:border-slate-700
+            bg-white
+            dark:bg-slate-900
+          "
+        >
+          {dashboard.stores?.map((store) => (
+            <option key={store.id} value={store.id}>
+              {store.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Store Details */}
+
+      <div
+        className="
+          rounded-3xl
+          border
+          border-slate-200
+          dark:border-slate-800
+          bg-white
+          dark:bg-slate-900
+          p-6
+        "
+      >
+        <div className="grid md:grid-cols-3 gap-6">
+          <div className="flex items-center gap-3">
+            <Store size={20} />
+            <div>
+              <p className="text-xs text-slate-500">Store Name</p>
+
+              <p className="font-semibold">{selectedStore?.name}</p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <Mail size={20} />
+
+            <div>
+              <p className="text-xs text-slate-500">Email</p>
+
+              <p>{selectedStore?.email}</p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <MapPin size={20} />
+
+            <div>
+              <p className="text-xs text-slate-500">Address</p>
+
+              <p>{selectedStore?.address}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Stats */}
 
       <div className="grid md:grid-cols-2 gap-6">
-        <div
-          className="
-            rounded-2xl
-            p-6
-            border
-            border-yellow-500/20
-            bg-gradient-to-br
-            from-yellow-500/10
-            to-yellow-500/5
-          "
-        >
-          <div className="flex items-center justify-between">
+        <div className="rounded-2xl p-6 border border-yellow-500/20 bg-gradient-to-br from-yellow-500/10 to-yellow-500/5">
+          <div className="flex justify-between">
             <div>
               <p className="text-slate-500">Average Rating</p>
 
               <h2 className="text-5xl font-bold mt-2">
-                {dashboard.averageRating || "0.0"}
+                {dashboard.averageRating || 0}
               </h2>
 
               <div className="mt-3">
@@ -100,22 +185,12 @@ export default function Dashboard() {
               </div>
             </div>
 
-            <Star size={42} className="text-yellow-400" />
+            <Star size={40} className="text-yellow-400" />
           </div>
         </div>
 
-        <div
-          className="
-            rounded-2xl
-            p-6
-            border
-            border-blue-500/20
-            bg-gradient-to-br
-            from-blue-500/10
-            to-blue-500/5
-          "
-        >
-          <div className="flex items-center justify-between">
+        <div className="rounded-2xl p-6 border border-blue-500/20 bg-gradient-to-br from-blue-500/10 to-blue-500/5">
+          <div className="flex justify-between">
             <div>
               <p className="text-slate-500">Total Ratings</p>
 
@@ -124,7 +199,7 @@ export default function Dashboard() {
               </h2>
             </div>
 
-            <Users size={42} className="text-blue-400" />
+            <Users size={40} className="text-blue-400" />
           </div>
         </div>
       </div>
