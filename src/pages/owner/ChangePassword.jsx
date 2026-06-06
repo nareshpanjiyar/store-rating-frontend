@@ -5,6 +5,8 @@ import { toast } from "sonner";
 import { changePassword } from "../../api/ownerApi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 const passwordRegex =
   /^(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{6,}$/;
@@ -27,15 +29,14 @@ const changePasswordSchema = z.object({
 
 export default function ChangePassword() {
   const user = JSON.parse(localStorage.getItem("user") || "{}");
-
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
-
   const [showNewPassword, setShowNewPassword] = useState(false);
+  const { logout } = useAuth();
+  const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(changePasswordSchema),
@@ -45,9 +46,11 @@ export default function ChangePassword() {
     try {
       await changePassword(data);
 
-      toast.success("Password changed successfully");
-
-      reset();
+      toast.success("Password changed successfully. Please sign in again.");
+      setTimeout(() => {
+        logout();
+        navigate("/login", { replace: true });
+      }, 1500);
     } catch (error) {
       toast.error(
         error?.response?.data?.message ||
