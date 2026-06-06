@@ -188,10 +188,6 @@ export default function CreateStore() {
               "
             />
 
-            <p className="mt-1 text-xs text-slate-500">
-              Maximum 400 characters
-            </p>
-
             {errors.address && (
               <p className="mt-1 text-sm text-red-500">
                 {errors.address.message}

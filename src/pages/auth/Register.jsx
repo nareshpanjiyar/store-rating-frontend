@@ -6,7 +6,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { toast } from "sonner";
 
 const schema = z.object({
-  name: z.string().min(2, "Name must contain at least 2 characters"),
+  name: z.string().min(20, "Name must contain at least 20 characters"),
 
   email: z.string().email("Please enter a valid email"),
 
