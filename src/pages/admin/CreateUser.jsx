@@ -4,6 +4,8 @@ import { UserPlus } from "lucide-react";
 import { toast } from "sonner";
 import { z } from "zod";
 import { createUser } from "../../api/adminApi";
+import { Eye, EyeOff } from "lucide-react";
+import { useState } from "react";
 
 const passwordRegex =
   /^(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{6,}$/;
@@ -32,6 +34,7 @@ const createUserSchema = z.object({
 });
 
 export default function CreateUser() {
+  const [showPassword, setShowPassword] = useState(false);
   const {
     register,
     handleSubmit,
@@ -169,25 +172,43 @@ export default function CreateUser() {
           <div>
             <label className="block mb-2 text-sm font-medium">Password</label>
 
-            <input
-              type="password"
-              {...register("password")}
-              placeholder="Enter password"
-              className="
-                w-full
-                px-4
-                py-3
-                rounded-xl
-                border
-                border-slate-300
-                dark:border-slate-700
-                bg-white
-                dark:bg-slate-800
-                focus:outline-none
-                focus:ring-2
-                focus:ring-blue-500
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                {...register("password")}
+                placeholder="Enter password"
+                className="
+                  w-full
+                  px-4
+                  py-3
+                  pr-12
+                  rounded-xl
+                  border
+                  border-slate-300
+                  dark:border-slate-700
+                  bg-white
+                  dark:bg-slate-800
+                  focus:outline-none
+                  focus:ring-2
+                  focus:ring-blue-500
+                "
+              />
+
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="
+                absolute
+                right-4
+                top-1/2
+                -translate-y-1/2
+                text-slate-500
+                cursor-pointer
               "
-            />
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
 
             {errors.password && (
               <p className="mt-1 text-sm text-red-500">

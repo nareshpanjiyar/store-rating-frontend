@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { Eye, EyeOff } from "lucide-react";
 import { registerUser } from "../../api/authApi";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "sonner";
@@ -9,13 +11,16 @@ const passwordRegex =
   /^(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{6,}$/;
 
 const schema = z.object({
-  name: z.string().min(20, "Name must contain at least 20 characters"),
+  name: z
+    .string()
+    .min(3, "Name must be at least 3 characters")
+    .max(60, "Name cannot exceed 60 characters"),
 
   email: z.string().email("Please enter a valid email"),
 
   address: z
     .string()
-    .min(1, "Address must be at least 1 character")
+    .min(5, "Address must be at least 5 characters")
     .max(400, "Address cannot exceed 400 characters"),
 
   password: z
@@ -29,13 +34,19 @@ const schema = z.object({
 export default function Register() {
   const navigate = useNavigate();
 
+  const [showPassword, setShowPassword] = useState(false);
+
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(schema),
   });
+
+  const addressValue = watch("address", "");
+  const nameValue = watch("name", "");
 
   const onSubmit = async (data) => {
     try {
@@ -58,12 +69,13 @@ export default function Register() {
         justify-center
         bg-slate-950
         px-4
+        py-10
       "
     >
       <div
         className="
           w-full
-          max-w-md
+          max-w-lg
           bg-slate-900
           border
           border-slate-800
@@ -72,6 +84,8 @@ export default function Register() {
           p-8
         "
       >
+        {/* Header */}
+
         <div className="text-center mb-8">
           <div
             className="
@@ -100,13 +114,22 @@ export default function Register() {
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+          {/* Name */}
+
           <div>
-            <label className="block mb-2 text-sm font-medium text-slate-200">
-              Full Name
-            </label>
+            <div className="flex justify-between mb-2">
+              <label className="text-sm font-medium text-slate-200">
+                Full Name
+              </label>
+
+              <span className="text-xs text-slate-500">
+                {nameValue.length}/60
+              </span>
+            </div>
 
             <input
               placeholder="Enter your full name"
+              autoComplete="name"
               {...register("name")}
               className="
                 w-full
@@ -129,6 +152,8 @@ export default function Register() {
             )}
           </div>
 
+          {/* Email */}
+
           <div>
             <label className="block mb-2 text-sm font-medium text-slate-200">
               Email Address
@@ -136,6 +161,7 @@ export default function Register() {
 
             <input
               type="email"
+              autoComplete="email"
               placeholder="Enter your email"
               {...register("email")}
               className="
@@ -161,12 +187,21 @@ export default function Register() {
             )}
           </div>
 
-          <div>
-            <label className="block mb-2 text-sm font-medium text-slate-200">
-              Address
-            </label>
+          {/* Address */}
 
-            <input
+          <div>
+            <div className="flex justify-between mb-2">
+              <label className="text-sm font-medium text-slate-200">
+                Address
+              </label>
+
+              <span className="text-xs text-slate-500">
+                {addressValue.length}/400
+              </span>
+            </div>
+
+            <textarea
+              rows={3}
               placeholder="Enter your address"
               {...register("address")}
               className="
@@ -182,6 +217,7 @@ export default function Register() {
                 focus:outline-none
                 focus:ring-2
                 focus:ring-green-500
+                resize-none
               "
             />
 
@@ -192,30 +228,53 @@ export default function Register() {
             )}
           </div>
 
+          {/* Password */}
+
           <div>
             <label className="block mb-2 text-sm font-medium text-slate-200">
               Password
             </label>
 
-            <input
-              type="password"
-              placeholder="Create a password"
-              {...register("password")}
-              className="
-                w-full
-                px-4
-                py-3
-                rounded-xl
-                bg-slate-800
-                border
-                border-slate-700
-                text-white
-                placeholder:text-slate-400
-                focus:outline-none
-                focus:ring-2
-                focus:ring-green-500
-              "
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                autoComplete="new-password"
+                placeholder="Create a password"
+                {...register("password")}
+                className="
+                  w-full
+                  px-4
+                  py-3
+                  pr-12
+                  rounded-xl
+                  bg-slate-800
+                  border
+                  border-slate-700
+                  text-white
+                  placeholder:text-slate-400
+                  focus:outline-none
+                  focus:ring-2
+                  focus:ring-green-500
+                "
+              />
+
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="
+                  absolute
+                  right-4
+                  top-1/2
+                  -translate-y-1/2
+                  text-slate-400
+                  hover:text-white
+                  transition-colors
+                  cursor-pointer
+                "
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
 
             {errors.password && (
               <p className="mt-1 text-sm text-red-400">
@@ -223,6 +282,32 @@ export default function Register() {
               </p>
             )}
           </div>
+
+          {/* Password Rules */}
+
+          <div
+            className="
+              rounded-xl
+              bg-slate-800
+              border
+              border-slate-700
+              p-4
+              text-sm
+              text-slate-400
+            "
+          >
+            <p className="font-medium text-slate-300 mb-2">
+              Password Requirements
+            </p>
+
+            <ul className="space-y-1 list-disc ml-5">
+              <li>Minimum 6 characters</li>
+              <li>At least 1 uppercase letter (A-Z)</li>
+              <li>At least 1 special character (!@#$%^&*)</li>
+            </ul>
+          </div>
+
+          {/* Submit */}
 
           <button
             type="submit"
@@ -234,6 +319,7 @@ export default function Register() {
               bg-green-600
               hover:bg-green-700
               disabled:opacity-60
+              disabled:cursor-not-allowed
               text-white
               font-semibold
               transition-colors
@@ -242,6 +328,8 @@ export default function Register() {
             {isSubmitting ? "Creating Account..." : "Create Account"}
           </button>
         </form>
+
+        {/* Footer */}
 
         <div className="mt-8 text-center">
           <p className="text-slate-400 text-sm">Already have an account?</p>

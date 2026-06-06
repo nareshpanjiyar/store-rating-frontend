@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Lock } from "lucide-react";
+import { Lock, Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 import { changePassword } from "../../api/ownerApi";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -25,6 +26,12 @@ const changePasswordSchema = z.object({
 });
 
 export default function ChangePassword() {
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+
+  const [showNewPassword, setShowNewPassword] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -33,7 +40,7 @@ export default function ChangePassword() {
   } = useForm({
     resolver: zodResolver(changePasswordSchema),
   });
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
+
   const submit = async (data) => {
     try {
       await changePassword(data);
@@ -99,30 +106,53 @@ export default function ChangePassword() {
         </div>
 
         <form onSubmit={handleSubmit(submit)} className="space-y-5">
+          {/* Current Password */}
+
           <div>
             <label className="block mb-2 text-sm font-medium">
               Current Password
             </label>
 
-            <input
-              type="password"
-              placeholder="Enter current password"
-              {...register("currentPassword")}
-              className="
-                w-full
-                px-4
-                py-3
-                rounded-xl
-                border
-                border-slate-300
-                dark:border-slate-700
-                bg-white
-                dark:bg-slate-800
-                focus:outline-none
-                focus:ring-2
-                focus:ring-blue-500
-              "
-            />
+            <div className="relative">
+              <input
+                type={showCurrentPassword ? "text" : "password"}
+                placeholder="Enter current password"
+                {...register("currentPassword")}
+                className="
+                  w-full
+                  px-4
+                  py-3
+                  pr-12
+                  rounded-xl
+                  border
+                  border-slate-300
+                  dark:border-slate-700
+                  bg-white
+                  dark:bg-slate-800
+                  focus:outline-none
+                  focus:ring-2
+                  focus:ring-blue-500
+                "
+              />
+
+              <button
+                type="button"
+                onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                className="
+                  absolute
+                  right-4
+                  top-1/2
+                  -translate-y-1/2
+                  text-slate-400
+                  hover:text-slate-600
+                  dark:hover:text-slate-200
+                  transition-colors
+                  cursor-pointer
+                "
+              >
+                {showCurrentPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
 
             {errors.currentPassword && (
               <p className="mt-1 text-sm text-red-500">
@@ -131,36 +161,80 @@ export default function ChangePassword() {
             )}
           </div>
 
+          {/* New Password */}
+
           <div>
             <label className="block mb-2 text-sm font-medium">
               New Password
             </label>
 
-            <input
-              type="password"
-              placeholder="Enter new password"
-              {...register("newPassword")}
-              className="
-                w-full
-                px-4
-                py-3
-                rounded-xl
-                border
-                border-slate-300
-                dark:border-slate-700
-                bg-white
-                dark:bg-slate-800
-                focus:outline-none
-                focus:ring-2
-                focus:ring-blue-500
-              "
-            />
+            <div className="relative">
+              <input
+                type={showNewPassword ? "text" : "password"}
+                placeholder="Enter new password"
+                {...register("newPassword")}
+                className="
+                  w-full
+                  px-4
+                  py-3
+                  pr-12
+                  rounded-xl
+                  border
+                  border-slate-300
+                  dark:border-slate-700
+                  bg-white
+                  dark:bg-slate-800
+                  focus:outline-none
+                  focus:ring-2
+                  focus:ring-blue-500
+                "
+              />
+
+              <button
+                type="button"
+                onClick={() => setShowNewPassword(!showNewPassword)}
+                className="
+                  absolute
+                  right-4
+                  top-1/2
+                  -translate-y-1/2
+                  text-slate-400
+                  hover:text-slate-600
+                  dark:hover:text-slate-200
+                  transition-colors
+                  cursor-pointer
+                "
+              >
+                {showNewPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
 
             {errors.newPassword && (
               <p className="mt-1 text-sm text-red-500">
                 {errors.newPassword.message}
               </p>
             )}
+          </div>
+
+          {/* Password Requirements */}
+
+          <div
+            className="
+              rounded-xl
+              bg-slate-100
+              dark:bg-slate-800
+              p-4
+              text-sm
+              text-slate-600
+              dark:text-slate-400
+            "
+          >
+            Password requirements:
+            <ul className="list-disc ml-5 mt-2 space-y-1">
+              <li>Minimum 6 characters</li>
+              <li>At least 1 uppercase letter (A-Z)</li>
+              <li>At least 1 special character (!@#$%^&*)</li>
+            </ul>
           </div>
 
           <div className="pt-2">
@@ -170,12 +244,15 @@ export default function ChangePassword() {
               className="
                 bg-blue-600
                 hover:bg-blue-700
+                disabled:opacity-50
+                disabled:cursor-not-allowed
                 text-white
                 px-6
                 py-3
                 rounded-xl
                 font-medium
                 transition-colors
+                cursor-pointer
               "
             >
               {isSubmitting ? "Updating Password..." : "Update Password"}
