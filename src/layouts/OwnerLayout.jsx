@@ -1,6 +1,7 @@
 import { useState } from "react";
 
-import { Outlet, NavLink, useNavigate } from "react-router-dom";
+import { Outlet, NavLink, useNavigate, useLocation } from "react-router-dom";
+
 import ProfileBadge from "../components/common/ProfileBadge";
 
 import {
@@ -14,11 +15,35 @@ import {
 export default function OwnerLayout() {
   const navigate = useNavigate();
 
+  const location = useLocation();
+
   const [collapsed, setCollapsed] = useState(false);
 
   const logout = () => {
     localStorage.clear();
     navigate("/login");
+  };
+
+  const pageInfo = {
+    "/owner": {
+      title: "Store Dashboard",
+      description: "View ratings, customer feedback and store performance",
+    },
+
+    "/owner/profile": {
+      title: "Profile",
+      description: "Manage your personal account information",
+    },
+
+    "/owner/change-password": {
+      title: "Change Password",
+      description: "Update your account password securely",
+    },
+  };
+
+  const current = pageInfo[location.pathname] || {
+    title: "Store Owner",
+    description: "",
   };
 
   const menuItems = [
@@ -37,7 +62,8 @@ export default function OwnerLayout() {
   return (
     <div
       className="
-        min-h-screen
+        h-screen
+        overflow-hidden
         flex
         bg-slate-100
         dark:bg-slate-950
@@ -45,9 +71,13 @@ export default function OwnerLayout() {
         dark:text-white
       "
     >
+      {/* Sidebar */}
+
       <aside
         className={`
           ${collapsed ? "w-20" : "w-64"}
+          h-screen
+          shrink-0
           transition-all
           duration-300
           border-r
@@ -59,7 +89,7 @@ export default function OwnerLayout() {
           flex-col
         `}
       >
-        {/* Header */}
+        {/* Logo */}
 
         <div
           className="
@@ -107,15 +137,16 @@ export default function OwnerLayout() {
               rounded
               hover:bg-slate-200
               dark:hover:bg-slate-800
+              cursor-pointer
             "
           >
             {collapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
           </button>
         </div>
 
-        {/* Menu */}
+        {/* Navigation */}
 
-        <nav className="flex-1 px-3 py-4 space-y-2">
+        <nav className="flex-1 px-3 py-4 space-y-2 overflow-y-auto">
           {menuItems.map((item) => {
             const Icon = item.icon;
 
@@ -130,7 +161,7 @@ export default function OwnerLayout() {
                     items-center
                     ${collapsed ? "justify-center" : "gap-3"}
                     p-3
-                    rounded-lg
+                    rounded-xl
                     transition-all
 
                     ${
@@ -167,7 +198,7 @@ export default function OwnerLayout() {
               items-center
               ${collapsed ? "justify-center" : "gap-3"}
               p-3
-              rounded-lg
+              rounded-xl
               hover:bg-red-600
               text-white
               transition-all
@@ -181,14 +212,26 @@ export default function OwnerLayout() {
         </div>
       </aside>
 
-      <main className="flex-1">
+      {/* Main Content */}
+
+      <main
+        className="
+          flex
+          flex-col
+          flex-1
+          overflow-hidden
+        "
+      >
+        {/* Page Header */}
+
         <div
           className="
-            h-16
-            px-6
+            h-20
+            shrink-0
+            px-8
             flex
             items-center
-            justify-end
+            justify-between
             border-b
             border-slate-200
             dark:border-slate-800
@@ -196,10 +239,26 @@ export default function OwnerLayout() {
             dark:bg-slate-950
           "
         >
+          <div>
+            <h1 className="text-3xl font-bold">{current.title}</h1>
+
+            <p className="text-sm text-slate-500 dark:text-slate-400">
+              {current.description}
+            </p>
+          </div>
+
           <ProfileBadge />
         </div>
 
-        <div className="p-8">
+        {/* Page Content */}
+
+        <div
+          className="
+            flex-1
+            overflow-y-auto
+            p-8
+          "
+        >
           <Outlet />
         </div>
       </main>

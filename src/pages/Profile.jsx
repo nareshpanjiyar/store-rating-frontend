@@ -5,10 +5,12 @@ export default function Profile() {
 
   return (
     <div className="max-w-3xl mx-auto">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold">Profile</h1>
-        <p className="text-slate-500 mt-1">View your account information</p>
-      </div>
+      {user.role === "USER" && (
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold">Profile</h1>
+          <p className="text-slate-500 mt-1">Manage your account information</p>
+        </div>
+      )}
 
       <div
         className="

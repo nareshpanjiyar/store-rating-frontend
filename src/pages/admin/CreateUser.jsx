@@ -58,14 +58,6 @@ export default function CreateUser() {
 
   return (
     <div className="max-w-3xl mx-auto">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold">Create User</h1>
-
-        <p className="text-slate-500 mt-1">
-          Add a new user or store owner to the platform
-        </p>
-      </div>
-
       <div
         className="
           bg-white

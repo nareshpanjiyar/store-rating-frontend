@@ -22,16 +22,6 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-8">
-      {/* Header */}
-
-      <div>
-        <h1 className="text-4xl font-bold">Admin Dashboard</h1>
-
-        <p className="text-slate-400 mt-2">
-          Monitor users, stores, and ratings across the platform.
-        </p>
-      </div>
-
       {/* Stats Cards */}
 
       <div className="grid md:grid-cols-3 gap-6">

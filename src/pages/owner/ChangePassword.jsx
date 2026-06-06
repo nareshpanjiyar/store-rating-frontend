@@ -5,7 +5,7 @@ import { changePassword } from "../../api/ownerApi";
 
 export default function ChangePassword() {
   const { register, handleSubmit, reset } = useForm();
-
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
   const submit = async (data) => {
     try {
       await changePassword(data);
@@ -20,13 +20,15 @@ export default function ChangePassword() {
 
   return (
     <div className="max-w-3xl mx-auto">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold">Change Password</h1>
+      {user.role === "USER" && (
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold">Change Password</h1>
 
-        <p className="text-slate-500 mt-1">
-          Update your account password securely
-        </p>
-      </div>
+          <p className="text-slate-500 mt-1">
+            Update your account password securely
+          </p>
+        </div>
+      )}
 
       <div
         className="

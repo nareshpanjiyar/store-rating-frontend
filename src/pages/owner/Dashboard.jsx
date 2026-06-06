@@ -73,16 +73,6 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-8">
-      {/* Header */}
-
-      <div>
-        <h1 className="text-4xl font-bold">Store Dashboard</h1>
-
-        <p className="text-slate-500 mt-2">
-          View ratings and customer feedback.
-        </p>
-      </div>
-
       {/* Stats */}
 
       <div className="grid md:grid-cols-2 gap-6">

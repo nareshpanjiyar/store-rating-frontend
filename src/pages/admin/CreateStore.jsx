@@ -63,14 +63,6 @@ export default function CreateStore() {
 
   return (
     <div className="max-w-3xl mx-auto">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold">Create Store</h1>
-
-        <p className="text-slate-500 mt-1">
-          Register a new store in the system
-        </p>
-      </div>
-
       <div
         className="
           bg-white

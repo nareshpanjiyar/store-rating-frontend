@@ -122,12 +122,37 @@ export default function Users() {
       {/* Header */}
 
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold">Users</h1>
+        {/* Search */}
 
-          <p className="text-slate-400 mt-1">
-            Manage user accounts and permissions
-          </p>
+        <div className="relative max-w-md">
+          <Search
+            size={18}
+            className="
+            absolute
+            left-4
+            top-1/2
+            -translate-y-1/2
+            text-slate-400
+          "
+          />
+
+          <input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search users..."
+            className="
+            w-full
+            pl-11
+            pr-4
+            py-3
+            rounded-xl
+            bg-slate-900
+            border
+            border-slate-800
+            outline-none
+            focus:border-blue-500
+          "
+          />
         </div>
 
         <div
@@ -147,39 +172,6 @@ export default function Users() {
 
           <span className="font-medium">{filteredUsers.length} Users</span>
         </div>
-      </div>
-
-      {/* Search */}
-
-      <div className="relative max-w-md">
-        <Search
-          size={18}
-          className="
-            absolute
-            left-4
-            top-1/2
-            -translate-y-1/2
-            text-slate-400
-          "
-        />
-
-        <input
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search users..."
-          className="
-            w-full
-            pl-11
-            pr-4
-            py-3
-            rounded-xl
-            bg-slate-900
-            border
-            border-slate-800
-            outline-none
-            focus:border-blue-500
-          "
-        />
       </div>
 
       {/* Table */}
