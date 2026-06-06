@@ -2,9 +2,27 @@ import { useForm } from "react-hook-form";
 import { Lock } from "lucide-react";
 import { toast } from "sonner";
 import { changePassword } from "../../api/ownerApi";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const changePasswordSchema = z.object({
+  currentPassword: z.string().min(3, "Current password must be at least 3 characters"),
+  newPassword: z.string().min(3, "New password must be at least 3 characters"),
+});
 
 export default function ChangePassword() {
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset } = useForm({
+      resolver: zodResolver(changePasswordSchema),
+    });
+    .address("Address is required")
+    .max(400, "Address cannot exceed 400 characters"),
+
+  ownerId: z.string().min(1, "Please select a store owner"),
+});
+
+export default function ChangePassword() {
+  const { register, handleSubmit, reset } = useForm({
+      resolver: zodResolver(changePasswordSchema),
+    });
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const submit = async (data) => {
     try {
