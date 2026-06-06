@@ -14,7 +14,10 @@ const createUserSchema = z.object({
 
   email: z.string().email("Please enter a valid email address"),
 
-  address: z.string().max(400, "Address cannot exceed 400 characters"),
+  address: z
+    .string()
+    .address("Address is required")
+    .max(400, "Address cannot exceed 400 characters"),
 
   password: z.string().min(1, "Password is required"),
 
