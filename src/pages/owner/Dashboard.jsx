@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/set-state-in-effect */
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 import {
@@ -32,13 +32,6 @@ export default function Dashboard() {
   });
 
   const dashboard = data?.data || {};
-
-  //   useEffect(() => {
-  //     if (!selectedStoreId && dashboard.selectedStore?.id) {
-  //       setSelectedStoreId(dashboard.selectedStore.id);
-  //     }
-  //   }, [dashboard.selectedStore, selectedStoreId]);
-
   const selectedStore = dashboard.selectedStore;
 
   const handleSort = (field) => {
