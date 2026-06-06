@@ -1,5 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-
+/* eslint-disable react-hooks/set-state-in-effect */
 import { useState, useMemo, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 
@@ -98,22 +97,21 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-8">
-      {/* Store Selector */}
+      {/* Header + Store Selector */}
 
-      <div
-        className="
-          flex
-          flex-col
-          lg:flex-row
-          lg:items-center
-          lg:justify-between
-          gap-4
-        "
-      >
-        <select
-          value={selectedStoreId}
-          onChange={(e) => setSelectedStoreId(e.target.value)}
-          className="
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div className="flex gap-4 items-center">
+          {selectedStoreId && (
+            <div>
+              <h2 className="text-2xl font-bold">Select Store</h2>
+            </div>
+          )}
+
+          {dashboard.stores?.length > 0 && (
+            <select
+              value={selectedStoreId}
+              onChange={(e) => setSelectedStoreId(e.target.value)}
+              className="
             min-w-[280px]
             px-4
             py-3
@@ -123,268 +121,355 @@ export default function Dashboard() {
             dark:border-slate-700
             bg-white
             dark:bg-slate-900
-            cursor-pointer
+            outline-none
           "
-        >
-          {dashboard.stores?.map((store) => (
-            <option key={store.id} value={store.id}>
-              {store.name}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {/* Store Details */}
-
-      <div
-        className="
-          rounded-3xl
-          border
-          border-slate-200
-          dark:border-slate-800
-          bg-white
-          dark:bg-slate-900
-          p-6
-        "
-      >
-        <div className="grid lg:grid-cols-3 gap-6">
-          <div className="flex items-start gap-3 min-w-0">
-            <Store size={20} className="shrink-0 mt-1 text-blue-500" />
-
-            <div className="min-w-0 flex-1">
-              <p className="text-xs text-slate-500">Store Name</p>
-
-              <p
-                title={selectedStore?.name}
-                className="
-                  font-semibold
-                  break-words
-                "
-              >
-                {selectedStore?.name}
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-start gap-3 min-w-0">
-            <Mail size={20} className="shrink-0 mt-1 text-violet-500" />
-
-            <div className="min-w-0 flex-1">
-              <p className="text-xs text-slate-500">Email</p>
-
-              <p
-                title={selectedStore?.email}
-                className="
-                  break-all
-                "
-              >
-                {selectedStore?.email}
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-start gap-3 min-w-0">
-            <MapPin size={20} className="shrink-0 mt-1 text-emerald-500" />
-
-            <div className="min-w-0 flex-1">
-              <p className="text-xs text-slate-500">Address</p>
-
-              <p
-                title={selectedStore?.address}
-                className="
-                  break-words
-                "
-              >
-                {selectedStore?.address}
-              </p>
-            </div>
-          </div>
+            >
+              {dashboard.stores.map((store) => (
+                <option key={store.id} value={store.id}>
+                  {store.name}
+                </option>
+              ))}
+            </select>
+          )}
         </div>
       </div>
 
-      {/* Stats */}
+      {/* No Store State */}
 
-      <div className="grid md:grid-cols-2 gap-6">
+      {!selectedStore ? (
         <div
           className="
-            rounded-3xl
-            p-6
-            border
-            border-yellow-500/20
-            bg-gradient-to-br
-            from-yellow-500/10
-            to-yellow-500/5
-          "
+          rounded-3xl
+          border
+          border-dashed
+          border-slate-300
+          dark:border-slate-700
+          bg-white
+          dark:bg-slate-900
+          p-20
+          text-center
+        "
         >
-          <div className="flex justify-between">
-            <div>
-              <p className="text-slate-500">Average Rating</p>
+          <Store
+            size={64}
+            className="
+            mx-auto
+            mb-5
+            text-slate-400
+          "
+          />
 
-              <h2 className="text-5xl font-bold mt-2">
-                {dashboard.averageRating || 0}
-              </h2>
+          <h3 className="text-2xl font-bold mb-2">No Store Assigned</h3>
 
-              <div className="mt-3">
-                <StarRating value={Math.round(dashboard.averageRating || 0)} />
+          <p className="text-slate-500 max-w-lg mx-auto">
+            No stores have been assigned to your account yet. Please contact the
+            administrator.
+          </p>
+        </div>
+      ) : (
+        <>
+          {/* Store Information */}
+
+          <div
+            className="
+            rounded-3xl
+            border
+            border-slate-200
+            dark:border-slate-800
+            bg-white
+            dark:bg-slate-900
+            p-6
+          "
+          >
+            <div className="grid lg:grid-cols-3 gap-6">
+              <div className="min-w-0">
+                <div className="flex gap-3">
+                  <Store
+                    size={18}
+                    className="
+                    mt-1
+                    shrink-0
+                    text-slate-500
+                  "
+                  />
+
+                  <div className="min-w-0">
+                    <p className="text-xs text-slate-500 uppercase">
+                      Store Name
+                    </p>
+
+                    <p
+                      className="
+                      font-semibold
+                      break-words
+                    "
+                    >
+                      {selectedStore.name}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="min-w-0">
+                <div className="flex gap-3">
+                  <Mail
+                    size={18}
+                    className="
+                    mt-1
+                    shrink-0
+                    text-slate-500
+                  "
+                  />
+
+                  <div className="min-w-0">
+                    <p className="text-xs text-slate-500 uppercase">Email</p>
+
+                    <p className="break-all">{selectedStore.email}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="min-w-0">
+                <div className="flex gap-3">
+                  <MapPin
+                    size={18}
+                    className="
+                    mt-1
+                    shrink-0
+                    text-slate-500
+                  "
+                  />
+
+                  <div className="min-w-0">
+                    <p className="text-xs text-slate-500 uppercase">Address</p>
+
+                    <p
+                      className="
+                      break-words
+                      whitespace-normal
+                    "
+                    >
+                      {selectedStore.address}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Stats */}
+
+          <div className="grid md:grid-cols-2 gap-6">
+            <div
+              className="
+              rounded-3xl
+              p-6
+              border
+              border-yellow-500/20
+              bg-gradient-to-br
+              from-yellow-500/10
+              to-yellow-500/5
+            "
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-slate-500">Average Rating</p>
+
+                  <h2 className="text-5xl font-bold mt-2">
+                    {dashboard.averageRating || 0}
+                  </h2>
+
+                  <div className="mt-3">
+                    <StarRating
+                      value={Math.round(dashboard.averageRating || 0)}
+                    />
+                  </div>
+                </div>
+
+                <Star size={42} className="text-yellow-400" />
               </div>
             </div>
 
-            <Star size={42} className="text-yellow-400" />
-          </div>
-        </div>
+            <div
+              className="
+              rounded-3xl
+              p-6
+              border
+              border-blue-500/20
+              bg-gradient-to-br
+              from-blue-500/10
+              to-blue-500/5
+            "
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-slate-500">Total Ratings</p>
 
-        <div
-          className="
-            rounded-3xl
-            p-6
-            border
-            border-blue-500/20
-            bg-gradient-to-br
-            from-blue-500/10
-            to-blue-500/5
-          "
-        >
-          <div className="flex justify-between">
-            <div>
-              <p className="text-slate-500">Total Ratings</p>
+                  <h2 className="text-5xl font-bold mt-2">
+                    {dashboard.totalRatings || 0}
+                  </h2>
+                </div>
 
-              <h2 className="text-5xl font-bold mt-2">
-                {dashboard.totalRatings || 0}
-              </h2>
+                <Users size={42} className="text-blue-400" />
+              </div>
             </div>
-
-            <Users size={42} className="text-blue-400" />
           </div>
-        </div>
-      </div>
 
-      {/* Search */}
+          {/* Search */}
 
-      <div className="relative max-w-md">
-        <Search
-          size={18}
-          className="
-            absolute
-            left-4
-            top-1/2
-            -translate-y-1/2
-            text-slate-400
-          "
-        />
+          <div className="relative max-w-md">
+            <Search
+              size={18}
+              className="
+              absolute
+              left-4
+              top-1/2
+              -translate-y-1/2
+              text-slate-400
+            "
+            />
 
-        <input
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search users..."
-          className="
-            w-full
-            pl-11
-            pr-4
-            py-3
-            rounded-xl
+            <input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search users..."
+              className="
+              w-full
+              pl-11
+              pr-4
+              py-3
+              rounded-xl
+              border
+              border-slate-300
+              dark:border-slate-700
+              bg-white
+              dark:bg-slate-900
+            "
+            />
+          </div>
+
+          {/* Ratings Table */}
+
+          <div
+            className="
+            rounded-3xl
+            overflow-hidden
             border
-            border-slate-300
-            dark:border-slate-700
+            border-slate-200
+            dark:border-slate-800
             bg-white
             dark:bg-slate-900
           "
-        />
-      </div>
-
-      {/* Ratings Table */}
-
-      <div
-        className="
-          rounded-3xl
-          overflow-hidden
-          border
-          border-slate-200
-          dark:border-slate-800
-          bg-white
-          dark:bg-slate-900
-        "
-      >
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[700px]">
-            <thead>
-              <tr className="border-b border-slate-200 dark:border-slate-800">
-                <th
-                  onClick={() => handleSort("name")}
-                  className="p-4 text-left cursor-pointer"
-                >
-                  <div className="flex items-center gap-2">
-                    User
-                    <ArrowUpDown size={15} />
-                  </div>
-                </th>
-
-                <th
-                  onClick={() => handleSort("email")}
-                  className="p-4 text-left cursor-pointer"
-                >
-                  <div className="flex items-center gap-2">
-                    Email
-                    <ArrowUpDown size={15} />
-                  </div>
-                </th>
-
-                <th
-                  onClick={() => handleSort("rating")}
-                  className="p-4 text-left cursor-pointer"
-                >
-                  <div className="flex items-center gap-2">
-                    Rating
-                    <ArrowUpDown size={15} />
-                  </div>
-                </th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {filteredUsers.length === 0 ? (
-                <tr>
-                  <td
-                    colSpan={3}
-                    className="
-                      text-center
-                      py-12
-                      text-slate-500
-                    "
-                  >
-                    No ratings found
-                  </td>
-                </tr>
-              ) : (
-                filteredUsers.map((item) => (
+          >
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
                   <tr
-                    key={item.ratingId}
                     className="
-                      border-b
-                      border-slate-200
-                      dark:border-slate-800
-                      hover:bg-slate-50
-                      dark:hover:bg-slate-800/50
-                      transition
-                    "
+                    border-b
+                    border-slate-200
+                    dark:border-slate-800
+                  "
                   >
-                    <td className="p-4 font-medium">{item.user.name}</td>
-
-                    <td className="p-4 text-slate-500">{item.user.email}</td>
-
-                    <td className="p-4">
-                      <div className="flex items-center gap-3">
-                        <span className="font-bold">{item.rating}</span>
-
-                        <StarRating value={item.rating} />
+                    <th
+                      onClick={() => handleSort("name")}
+                      className="
+                      p-4
+                      text-left
+                      cursor-pointer
+                    "
+                    >
+                      <div className="flex items-center gap-2">
+                        User
+                        <ArrowUpDown size={15} />
                       </div>
-                    </td>
+                    </th>
+
+                    <th
+                      onClick={() => handleSort("email")}
+                      className="
+                      p-4
+                      text-left
+                      cursor-pointer
+                    "
+                    >
+                      <div className="flex items-center gap-2">
+                        Email
+                        <ArrowUpDown size={15} />
+                      </div>
+                    </th>
+
+                    <th
+                      onClick={() => handleSort("rating")}
+                      className="
+                      p-4
+                      text-left
+                      cursor-pointer
+                    "
+                    >
+                      <div className="flex items-center gap-2">
+                        Rating
+                        <ArrowUpDown size={15} />
+                      </div>
+                    </th>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div>
+                </thead>
+
+                <tbody>
+                  {filteredUsers.length === 0 ? (
+                    <tr>
+                      <td
+                        colSpan={3}
+                        className="
+                        text-center
+                        py-16
+                        text-slate-500
+                      "
+                      >
+                        No ratings found.
+                      </td>
+                    </tr>
+                  ) : (
+                    filteredUsers.map((item) => (
+                      <tr
+                        key={item.ratingId}
+                        className="
+                        border-b
+                        border-slate-200
+                        dark:border-slate-800
+                        hover:bg-slate-50
+                        dark:hover:bg-slate-800/40
+                        transition
+                      "
+                      >
+                        <td className="p-4 font-medium">{item.user.name}</td>
+
+                        <td
+                          className="
+                          p-4
+                          text-slate-500
+                          break-all
+                        "
+                        >
+                          {item.user.email}
+                        </td>
+
+                        <td className="p-4">
+                          <div className="flex items-center gap-3">
+                            <span className="font-bold">{item.rating}</span>
+
+                            <StarRating value={item.rating} />
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }
