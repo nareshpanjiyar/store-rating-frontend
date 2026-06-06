@@ -294,10 +294,9 @@ export default function Users() {
                           min-w-[140px]
                           px-4
                           py-2.5
-                          rounded-xl
+                          
                           text-sm
                           font-semibold
-                          border
                           ${
                             user.role === "ADMIN"
                               ? `
