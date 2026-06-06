@@ -28,6 +28,7 @@ export default function Dashboard() {
   const { data, isLoading } = useQuery({
     queryKey: ["ownerDashboard", selectedStoreId],
     queryFn: () => getOwnerDashboard(selectedStoreId),
+    retry: false,
   });
 
   const dashboard = data?.data || {};
