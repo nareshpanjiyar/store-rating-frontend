@@ -10,9 +10,12 @@ const schema = z.object({
 
   email: z.string().email("Please enter a valid email"),
 
-  address: z.string().min(1, "Address is required"),
+  address: z
+    .string()
+    .min(10, "Address must be at least 10 characters")
+    .max(400, "Address cannot exceed 400 characters"),
 
-  password: z.string().min(8, "Password must be at least 8 characters"),
+  password: z.string().min(3, "Password must be at least 3 characters"),
 });
 
 export default function Register() {
