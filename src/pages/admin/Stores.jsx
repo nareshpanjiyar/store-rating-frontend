@@ -41,19 +41,29 @@ export default function Stores() {
       let bValue;
 
       switch (sortField) {
+        case "owner":
+          aValue = a.owner?.name || "";
+          bValue = b.owner?.name || "";
+          break;
+
+        case "rating":
+          aValue = Number(a.rating || 0);
+          bValue = Number(b.rating || 0);
+          break;
+
         case "email":
-          aValue = a.email;
-          bValue = b.email;
+          aValue = a.email || "";
+          bValue = b.email || "";
           break;
 
         case "address":
-          aValue = a.address;
-          bValue = b.address;
+          aValue = a.address || "";
+          bValue = b.address || "";
           break;
 
         default:
-          aValue = a.name;
-          bValue = b.name;
+          aValue = a.name || "";
+          bValue = b.name || "";
       }
 
       if (aValue < bValue) return sortDirection === "asc" ? -1 : 1;
@@ -149,12 +159,7 @@ export default function Stores() {
               <tr className="border-b border-slate-800">
                 <th
                   onClick={() => handleSort("name")}
-                  className="
-                    p-4
-                    text-left
-                    cursor-pointer
-                    select-none
-                  "
+                  className="p-4 text-left cursor-pointer select-none"
                 >
                   <div className="flex items-center gap-2">
                     Store Name
@@ -163,28 +168,38 @@ export default function Stores() {
                 </th>
 
                 <th
-                  onClick={() => handleSort("email")}
-                  className="
-                    p-4
-                    text-left
-                    cursor-pointer
-                    select-none
-                  "
+                  onClick={() => handleSort("rating")}
+                  className="p-4 text-left cursor-pointer select-none"
                 >
                   <div className="flex items-center gap-2">
-                    Email
+                    Rating
+                    <ArrowUpDown size={15} />
+                  </div>
+                </th>
+
+                <th
+                  onClick={() => handleSort("owner")}
+                  className="p-4 text-left cursor-pointer select-none"
+                >
+                  <div className="flex items-center gap-2">
+                    Owner
+                    <ArrowUpDown size={15} />
+                  </div>
+                </th>
+
+                <th
+                  onClick={() => handleSort("email")}
+                  className="p-4 text-left cursor-pointer select-none"
+                >
+                  <div className="flex items-center gap-2">
+                    Store Email
                     <ArrowUpDown size={15} />
                   </div>
                 </th>
 
                 <th
                   onClick={() => handleSort("address")}
-                  className="
-                    p-4
-                    text-left
-                    cursor-pointer
-                    select-none
-                  "
+                  className="p-4 text-left cursor-pointer select-none"
                 >
                   <div className="flex items-center gap-2">
                     Address
@@ -233,6 +248,30 @@ export default function Stores() {
                         </p>
                       </div>
                     </div>
+                  </td>
+
+                  <td className="p-4">
+                    <div className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-yellow-500/10 border border-yellow-500/20">
+                      <span className="text-yellow-400">★</span>
+
+                      <span className="font-semibold">{store.rating}</span>
+                    </div>
+                  </td>
+
+                  <td className="p-4">
+                    {store.owner ? (
+                      <div>
+                        <p className="font-medium text-white">
+                          {store.owner.name}
+                        </p>
+
+                        <p className="text-sm text-slate-400">
+                          {store.owner.email}
+                        </p>
+                      </div>
+                    ) : (
+                      <span className="text-slate-500">Not Assigned</span>
+                    )}
                   </td>
 
                   <td className="p-4 text-slate-300">{store.email}</td>
